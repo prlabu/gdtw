@@ -27,7 +27,7 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_SKIP: "*-win_amd64" # TODO: find way to get win_64 to work
+          CIBW_SKIP: "*-win_amd64 pp*" # TODO: find way to get win_64 to work
 
       - uses: actions/upload-artifact@v4
         with:
