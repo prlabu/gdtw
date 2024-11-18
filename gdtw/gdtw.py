@@ -15,7 +15,7 @@
 
 import numpy as np
 import time
-from .gdtwcpp import solve
+from gdtwcpp import solve
 from .signal import signal
 from .utils import process_function
 
