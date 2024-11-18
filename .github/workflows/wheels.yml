@@ -22,13 +22,13 @@ jobs:
       - if: runner.os == 'Windows'
         uses: TheMrMilchmann/setup-msvc-dev@v3
         with:
-          arch: amd64_x86
+          arch: x86
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         # to supply options, put them in 'env', like:
-        # env:
-        #   CIBW_SOME_OPTION: value
+        env:
+          CIBW_SKIP: *-win_amd64 # TODO: find way to get win_64 to work
 
       - uses: actions/upload-artifact@v4
         with:
