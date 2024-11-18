@@ -83,30 +83,8 @@ cpp_module = Extension(
   language="c++11"
 )
 
-with open("readme.md","r") as f:
-  long_description = f.read();
-
 setup_params = setup(
-  name='gdtw',
-  version='1.1.3',
-  author='Dave Deriso',
-  author_email='dderiso@alumni.stanford.edu',
-  description='General Dynamic Time Warping',
-  long_description=long_description,
-  long_description_content_type='text/markdown',
-  url='https://dderiso.github.io/gdtw',
-  project_urls={
-    "Bug Tracker": "https://github.com/dderiso/gdtw/issues",
-  },
-  classifiers=[
-    "Programming Language :: Python :: 3",
-    "Programming Language :: C++",
-    "License :: OSI Approved :: Apache Software License",
-    "Operating System :: OS Independent"
-  ],
   cmdclass={'build_ext': BuildExt},
-  setup_requires=["numpy>=1.20.0"],
-  install_requires=["numpy>=1.20.0"],
   ext_modules=[cpp_module],
   packages=['gdtw']
 )
