@@ -22,7 +22,8 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_SKIP: pp* *_i686
+          CIBW_ENVIRONMENT: PIP_ONLY_BINARY=":all:"
+          CIBW_SKIP: pp* *_i686 *-musllinux_*
 
       - uses: actions/upload-artifact@v4
         with:
