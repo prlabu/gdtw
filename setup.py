@@ -51,13 +51,6 @@ class BuildExt(build_ext):
         self.compiler.compile_options.extend(['/EHsc', '/O2', '/W3', '/GL', '/DNDEBUG', '/MD'])
       elif hasattr(self.compiler, 'compiler'):
         self.compiler.compiler.extend(['/EHsc', '/O2', '/W3', '/GL', '/DNDEBUG', '/MD'])
-      # Set environment variables for MSVC
-      os.environ['DISTUTILS_USE_SDK'] = '1'
-      os.environ['MSSdk'] = '1'
-      # Check if Visual C++ Build Tools are available
-      if not any(os.path.exists(os.path.join(path, 'cl.exe')) for path in os.environ['PATH'].split(os.pathsep)):
-        print("Warning: Visual C++ Build Tools not found in PATH. Compilation may fail.")
-        print("Please ensure they are installed and properly set up.")
       # Add extra compile arguments for Windows
       if hasattr(self.compiler, 'compile_options'):
         self.compiler.compile_options.extend(['/std:c++14', '/arch:AVX2', '/Ot'])
@@ -77,7 +70,8 @@ cpp_module = Extension(
   'gdtwcpp', 
   sources=['gdtw/gdtw_solver.cpp'],
   include_dirs=[
-    np.get_include()
+    np.get_include(),
+    "./gdtw",
   ],
   extra_compile_args=["-Ofast", "-Wall", "-std=c++11"],# "-flto"], # "-target", "x86_64-apple-macos"
   language="c++11"
