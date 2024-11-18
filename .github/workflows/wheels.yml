@@ -21,6 +21,8 @@ jobs:
         
       - if: runner.os == 'Windows'
         uses: TheMrMilchmann/setup-msvc-dev@v3
+        with:
+          arch: amd64_x86
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
