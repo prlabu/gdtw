@@ -13,6 +13,8 @@
 
 import numpy as np
 from .utils import scale
+from scipy.interpolate import interp1d
+
 
 '''
 Signals can be specified in 3 ways:
@@ -25,7 +27,10 @@ In all cases, we'll return a sample vector and function.
 
 # Piecewise-linear interpolation, constant beyond boundaries (see "Signal" section in paper).
 def piecewise_linear_interpolate(t_z, z):
-    return lambda t_: np.interp(t_,t_z,z)
+    # return lambda t_: np.interp(t_,t_z,z)
+    def interp(t_z, z):
+        return interp1d(t_z, t_z, axis=0, bounds_error=False, fill_value=np.nan)
+    return lambda t_: interp(t_)
 
 def memoize(f):
     cache = {}
@@ -91,7 +96,9 @@ class Signal:
                 print(f"Assuming {self.name} is sampled at even intervals. If this is incorrect, please set t_{self.name} explicitly by passing a tuple containing (array of signal samples, array of time steps).")
 
             # Finally, we'll construct a function from our signal samples using piecewise linear interpolation.
-            self.z_f = piecewise_linear_interpolate(t_z, self.z_a)
+            # self.z_f = piecewise_linear_interpolate(t_z, self.z_a)
+            self.z_f = interp1d(t_z, self.z_a, axis=0, bounds_error=False, fill_value=np.nan)
+
 
         # Case 3: If z is a tuple,
         elif isinstance(self.z, tuple):
@@ -125,7 +132,8 @@ class Signal:
                         raise ValueError(f"Signal {self.name} is given as a tuple, but the second entry (time) is given as a multidimensional array. Time can only be 1-D.")
 
                 # Finally, we'll construct a function from our signal samples using piecewise linear interpolation.
-                self.z_f = piecewise_linear_interpolate(t_z, self.z_a)
+                # self.z_f = piecewise_linear_interpolate(t_z, self.z_a)
+                self.z_f = interp1d(t_z, self.z_a, axis=0, bounds_error=False, fill_value=np.nan)
 
         # If we're not given a signal, then we'll obviously throw an error.
         elif self.z is None:
