@@ -27,9 +27,6 @@ In all cases, we'll return a sample vector and function.
 
 # Piecewise-linear interpolation, constant beyond boundaries (see "Signal" section in paper).
 def piecewise_linear_interpolate(t_z, z):
-    # return lambda t_: np.interp(t_,t_z,z)
-    # def interp(t_z, z):
-    #     return interp1d(t_z, t_z, axis=0, kind='linear', bounds_error=False, fill_value=np.nan)
     interp = interp1d(t_z, z, axis=0, kind='linear', bounds_error=False, fill_value=np.nan)
     return lambda t_: interp(t_)
 
@@ -68,6 +65,8 @@ class Signal:
             t_z = np.linspace(0,1,num=self.N).astype(np.double)
             # and generate an array.
             self.z_a = self.z_f(t_z)
+            self.z_a = self.z_a[:, np.newaxis] # ensure that signals are not 1d eg, shape=(ns,)
+
 
             # If the user wants us to scale the signals, we'll have to test the range of the function.
             if self.scale_signals:
@@ -84,6 +83,7 @@ class Signal:
         elif isinstance(self.z, np.ndarray) or isinstance(self.z, list):
             # then ensure it's a numpy array.
             self.z_a = np.array(self.z, dtype=np.double)
+            self.z_a = self.z_a[:, np.newaxis] # ensure that signals are not 1d eg, shape=(ns,)
 
             # If the user requests us to scale this signal (recommended to prevent numerical underflow),
             if self.scale_signals:
@@ -114,6 +114,8 @@ class Signal:
                 if isinstance(self.z_a, np.ndarray) or isinstance(self.z_a, list):
                     # to ensure it's a numpy array.
                     self.z_a = np.array(self.z_a, dtype=np.double)
+                    self.z_a = self.z_a[:, np.newaxis] # ensure that signals are not 1d eg, shape=(ns,)
+
                 # If the samples aren't given as a sequence, then we'll have to stop here.
                 else:
                     raise ValueError(f"Signal {self.name} is given as a tuple, but the first entry is not an array.")
