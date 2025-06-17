@@ -13,6 +13,9 @@
 
 
 import numpy as np
+from inspect import signature
+
+
 
 def scale(seq, range=[-1,1]):
     return (range[1]-range[0])*((seq-np.nanmin(seq))/np.nanmax(seq-np.nanmin(seq))) + range[0]
@@ -28,15 +31,36 @@ def process_function(f):
     # Determine if the function is given as a string (indicates that the user wants a C++ function),
     if isinstance(f, str):
         # if so convert the string into a function.
-        if   f == "L1": f_out = lambda x_,axis=1: np.abs(x_) # np.linalg.norm(x_,ord=1,axis=axis)
-        elif f == "L2": f_out = lambda x_,axis=1: x_**2     # np.linalg.norm(x_,ord=2,axis=axis)**2
+        if   f == "L1": f_out = lambda x_,y_,axis=1: np.abs(x_- y_) # np.linalg.norm(x_,ord=1,axis=axis)
+        elif f == "L2": f_out = lambda x_,y_,axis=1: (x_- y_)**2     # np.linalg.norm(x_,ord=2,axis=axis)**2
+        elif f == "cosine": 
+            def f_out(X, Y):
+                # f_out = None     # np.linalg.norm(x_,ord=2,axis=axis)**2
+            
+                # Compute L2 loss over the last axis (feature dim)
+                # Ensure A, B have shape (Q, R, S)
+                XY_dot = np.sum(np.multiply(X, Y), axis=2)             
+                X_norm = np.linalg.norm(X, axis=2)   
+                Y_norm = np.linalg.norm(Y, axis=2)    
+
+                # Avoid division by zero
+                denom = X_norm * Y_norm
+                denom[denom == 0] = 1e-8
+
+                cos_sim = XY_dot / denom                      # shape (Q, R)
+                return 1 - cos_sim   
         else:
             raise ValueError("Error: String is not recognized by this API. You can use one of the built-in C function by passing a string such as 'L1' or 'L2'.")
 
     # Or, if it's a callable function (indicates that the user wrote this function),
     elif callable(f):
+        # sig = signature(f)
+        # len(sig.parameters)==1 and
+
         # The default is to run the function as a loop (slower).
         f_out = lambda x_: np.array([f(x_i) for x_i in x_])
+        # f_out = lambda x_, y_: np.array([f(x_i, y_i) for x_i, y_i in zip(x_, y_)])
+
 
         # we'll test it ability to be vectorized by running it on a test array and seeing if the shape is preserved.
         if f(np.arange(10)).shape[0] == 10:

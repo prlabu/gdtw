@@ -151,19 +151,33 @@ class GDTW:
         X = X.squeeze()
         Y = Y.squeeze()
 
-        #     np.sum((XY)**2, axis=-1)
-        if self.Loss == "L2":
-            self.D = np.sum((X - Y)**2, axis=-1)  # shape (N, M)
-        elif self.Loss == "L1":
-            self.D = np.sum(np.abs(X - Y), axis=-1)  # shape (N, M)
-        elif self.Loss == "cosine":
-            # Compute L2 loss over the last axis (feature dim)
-            XY_dot = np.sum(np.multiply(X, Y), axis=-1)
-            X_norm = np.sqrt(np.sum(np.multiply(X, X), axis=-1))
-            Y_norm = np.sqrt(np.sum(np.multiply(Y, Y), axis=-1))
-            self.D = 1 - np.divide(XY_dot, np.multiply(X_norm, Y_norm))
-        else:
-            self.D = self.loss_f(X - Y)  # fallback to generic loss
+        self.D = self.loss_f(X, Y)
+
+        # #     np.sum((XY)**2, axis=-1)
+        # if self.Loss == "L2":
+        #     self.D = np.sum((X - Y)**2, axis=-1)  # shape (N, M)
+        # elif self.Loss == "L1":
+        #     self.D = np.sum(np.abs(X - Y), axis=-1)  # shape (N, M)
+        # elif self.Loss == "cosine":
+        #     # Compute L2 loss over the last axis (feature dim)
+        #     # Ensure A, B have shape (Q, R, S)
+        #     XY_dot = np.sum(np.multiply(X, Y), axis=2)             
+        #     X_norm = np.linalg.norm(X, axis=2)   
+        #     Y_norm = np.linalg.norm(Y, axis=2)    
+
+        #     # Avoid division by zero
+        #     denom = X_norm * Y_norm
+        #     denom[denom == 0] = 1e-8
+
+        #     cos_sim = XY_dot / denom                      # shape (Q, R)
+        #     self.D = 1 - cos_sim  
+
+        #     # XY_dot = np.sum(np.multiply(X, Y), axis=-1)
+        #     # X_norm = np.sqrt(np.sum(np.multiply(X, X), axis=-1))
+        #     # Y_norm = np.sqrt(np.sum(np.multiply(Y, Y), axis=-1))
+        #     # self.D = 1 - np.divide(XY_dot, np.multiply(X_norm, Y_norm))
+        # else:
+        #     self.D = self.loss_f(X - Y)  # fallback to generic loss
 
         if self.verbose > 0:
             print(f"Pre-computed loss: {time.time() - time_start:.4f} sec")
