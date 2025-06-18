@@ -112,28 +112,6 @@ class GDTW:
         # print( self.u[int(self.N/2)] - self.l[int(self.N/2)] )
         return self
 
-    # def compute_dist_matrix(self):
-    #     # The pre-computed distance matrix must satisfy: D[i,j] = Loss( x(Tau[i,j]) - y(t[i]) )
-    #     # Note: scipy.spatial.distance.cdist won't work since t is a vector and tau is a matrix.
-    #     if self.verbose > 0: time_start = time.time()
-        
-    #     # We'll compute x(tau) and assign infinitity at undefined points.
-    #     X = self.x_f(self.Tau)
-    #     X[np.isnan(X)] = np.inf
-        
-    #     # We repeat y(t) so that it's the same shape of x(tau).
-    #     Y = np.tile(self.y_f(self.t).reshape((self.N,1)),(1,self.M))
-        
-    #     # We apply the processed loss function.
-    #     #   the default is "L2" => self.D = (X-Y)**2
-    #     self.D = self.loss_f(X-Y) 
-    #     # self.D = (X-Y)**2
-        
-    #     # Finally, we'll report the time it took to do all of this.
-    #     if self.verbose > 0: print(f"Pre-computed loss: {time.time() - time_start :03.4f} sec")
-    #     return self
-
-
     def compute_dist_matrix(self):
         # The pre-computed distance matrix must satisfy: D[i,j] = Loss( x(Tau[i,j]) - y(t[i]) )
         if self.verbose > 0: time_start = time.time()
@@ -152,32 +130,6 @@ class GDTW:
         Y = Y.squeeze()
 
         self.D = self.loss_f(X, Y)
-
-        # #     np.sum((XY)**2, axis=-1)
-        # if self.Loss == "L2":
-        #     self.D = np.sum((X - Y)**2, axis=-1)  # shape (N, M)
-        # elif self.Loss == "L1":
-        #     self.D = np.sum(np.abs(X - Y), axis=-1)  # shape (N, M)
-        # elif self.Loss == "cosine":
-        #     # Compute L2 loss over the last axis (feature dim)
-        #     # Ensure A, B have shape (Q, R, S)
-        #     XY_dot = np.sum(np.multiply(X, Y), axis=2)             
-        #     X_norm = np.linalg.norm(X, axis=2)   
-        #     Y_norm = np.linalg.norm(Y, axis=2)    
-
-        #     # Avoid division by zero
-        #     denom = X_norm * Y_norm
-        #     denom[denom == 0] = 1e-8
-
-        #     cos_sim = XY_dot / denom                      # shape (Q, R)
-        #     self.D = 1 - cos_sim  
-
-        #     # XY_dot = np.sum(np.multiply(X, Y), axis=-1)
-        #     # X_norm = np.sqrt(np.sum(np.multiply(X, X), axis=-1))
-        #     # Y_norm = np.sqrt(np.sum(np.multiply(Y, Y), axis=-1))
-        #     # self.D = 1 - np.divide(XY_dot, np.multiply(X_norm, Y_norm))
-        # else:
-        #     self.D = self.loss_f(X - Y)  # fallback to generic loss
 
         if self.verbose > 0:
             print(f"Pre-computed loss: {time.time() - time_start:.4f} sec")
