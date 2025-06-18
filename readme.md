@@ -1,6 +1,6 @@
 # Multidimensional Dynamic Time Warping (GDTW) for Speech and High-Dimensional Signals
 
-This repository extends the original [GDTW library](https://dderiso.github.io/gdtw/) to support **multidimensional signal alignment**, with a focus on applications in speech processing.
+This repository makes minor updates to the original [GDTW library](https://dderiso.github.io/gdtw/) to support **multidimensional signal alignment**, with a focus on applications in speech processing.
 
 Key updates in this [`multidim`](https://github.com/prlabu/gdtw/tree/multidim) branch:
 
@@ -12,16 +12,21 @@ Key updates in this [`multidim`](https://github.com/prlabu/gdtw/tree/multidim) b
 
 ![Speech DTW](./docs/src/images/gdtw-multidim-speech.png "Speech DTW")
 
-## 🔍 Use Cases
+## Use Cases 
 - Speech signal alignment
 - Multisensor trajectory analysis
 - MFCC/embedding warping for prosody manipulation
 - Motion capture 
 - Any high-dimensional dynamic time warping
 
-## 🔗 Related Work
+keywords: Dynamic Time Warping, Speech Alignment, Speech DTW, Multidimensional Time Series, Audio Signal Processing, Speech Signal Processing
+
+## Related Work
 [DTWSpeech](https://github.com/aishoot/DTWSpeech)
 
 [speech_dtw (Kamper et al.)](https://github.com/kamperh/speech_dtw)
 
 The original GDTW paper notes that these approaches often require additional pre- and post-processing to avoid singularities. Our implementation builds directly on GDTW's stability and extends it to richer input modalities.
+
+
+
