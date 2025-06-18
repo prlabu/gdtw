@@ -1,7 +1,7 @@
 # Multidimensional gDTW and application to speech signal
 
 
-Here we propose a few updates to the codebase, which are in the branch ["multidim"](https://github.com/prlabu/gdtw/tree/multidim) branch. 
+Here we propose a few updates to the GDTW codebase, which are in the branch [``multidim``](https://github.com/prlabu/gdtw/tree/multidim) branch. 
 
 - All signals are either 1d (nt, 1) or 2d (nt, nd) where nd is the dimensionality of the signal. 
 - cosine distance loss function between two timepoints in the signal X, Y. The original version offers only L1 and L2 distances between timepoints.
