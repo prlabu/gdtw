@@ -25,7 +25,7 @@ keywords: Dynamic Time Warping, Speech Alignment, Speech DTW, Multidimensional T
 ## Related Work
 [DTWSpeech](https://github.com/aishoot/DTWSpeech)
 
-[speech_dtw (Kamper et al.)](https://github.com/kamperh/speech_dtw)
+[speech_dtw](https://github.com/kamperh/speech_dtw)
 
 The original GDTW paper notes that these approaches often require additional pre- and post-processing to avoid singularities. Our implementation builds directly on GDTW's stability and extends it to richer input modalities.
 
